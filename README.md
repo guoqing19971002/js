@@ -1,3 +1,3 @@
 # js
 javascript practice examples
-1 事件队列
+1 js事件循环和任务队列
