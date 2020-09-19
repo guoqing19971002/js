@@ -49,7 +49,7 @@ setTimeout(() => {
         resolve()
     }).then((res) =>{
             console.log('4') // 代码执行到这里，微任务只有一个，打印4，继续执行，.then微任务入队列，则继续执行，打印5.之后微任务队列无新任务
-            //再继续执行宏任务队列
+            //则继续执行宏任务队列
             new Promise(resolve => { 
                 resolve()
                 }).then((res) =>{
