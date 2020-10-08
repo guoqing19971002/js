@@ -190,7 +190,7 @@ Promise.race(list1).then( value => {
     console.log(value) // 打印6
 })
 Promise.race(list2).then( value => {
-    console.log(value) // 打印6
+    console.log(value)
 }).catch(err => {
     console.log(err) // 打印7
 })
