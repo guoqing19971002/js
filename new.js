@@ -1,3 +1,4 @@
+/* 手先写一个简单的构造函数 */
 function Person (name,age){
     this.name = name
     this.age  = age
@@ -9,14 +10,18 @@ function myNew(fn){
 
     /*  首先创建一个空对象，最后会返回这个对象 */
     let myObj = {}
+
     /* 将新对象的对象原型指向构造函数的原型对象 */
     myObj.__proto__ = fn.prototype
-     /* 接下来需要执行构造函数的代码,并将this指向新创建的对象。arguments是个伪数组，第一个参数是构造函数。
-     剩下的参数是需要传入构造函数的参数,经过如下处理，params中存入的是构造函数需要的参数，且是一个真数组
-     */
+
+    /* 接下来需要执行构造函数的代码,并将this指向新创建的对象。arguments是个伪数组，第一个参数是构造函数。
+    剩下的参数是需要传入构造函数的参数,经过如下处理，params中存入的是构造函数需要的参数，且是一个真数组
+    */
     const params = Array.prototype.slice.call(arguments).splice(1)
+    
     /* 通过apply改变this指向，并执行构造函数 */
     fn.apply(myObj,params)
+
     /* 最后返回该对象 */
     return myObj
 }
