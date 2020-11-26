@@ -9,7 +9,8 @@ const obj1 = {
 foo.__proto__.myBind = function(obj){
    const fun = this
    /* binb只会改变this指向，不会调用函数。而call既会调用函数又会改变this
-   因此就有思路了，可以在自己的bind中返回一个call函数（注意不是call函数的调用）。*/
+   因此就有思路了，可以在自己的bind中返回一个call函数（注意不是call函数的调用）。
+   这里再次用到了柯里化*/
    return function(args){
        fun.call(obj,args)
    }
