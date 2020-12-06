@@ -25,14 +25,51 @@ fn(); */
 }
 fn(); */
 /* demo3 */
-var a = 20;
+/* var a = 20;
 var obj = {
   a: 10,
-  c: this.a + 20,
+  c: this.a + 20, // {}不能单独形成作用域 obj中的this指向全局对象window
+  // 注意用node环境运行时 顶层对象时golbal 不是window
   fn: function () {
     return this.a;
   }
 }
 
 console.log(obj.c);
-console.log(obj.fn());
+console.log(obj.fn()); */
+
+/* demo4 */
+// 'use strict';
+/* var a = 20;
+function foo() {
+  var a = 1;
+  var obj = {
+    a: 10,
+    c: this.a + 20,
+    fn: function () {
+      console.log(this.a)
+    }
+  }
+  obj.fn() // 10
+}
+foo() */
+//foo()   // 函数独立调用 内部this指向window
+
+/* demo6 */
+//'use strict';
+/* function foo() {
+  console.log(this.a)
+}
+
+function active(fn) {
+  console.log(this) // window 为什么? 因为active函数是独立调用的 this指向undefined 非严格模式下 指向window
+  fn(); // 真实调用者，为独立调用 其内部this指向全局 a为20
+}
+
+var a = 20;
+var obj = {
+  a: 10,
+  getA: foo
+}
+obj.getA() // 10  函数被obj调用 this指向obj
+active(obj.getA); //20 */
