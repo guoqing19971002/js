@@ -73,3 +73,22 @@ var obj = {
 }
 obj.getA() // 10  函数被obj调用 this指向obj
 active(obj.getA); //20 */
+
+/* 高阶函数的this */
+
+globalThis.name = '小明'
+
+const obj = {
+  name:'小红',
+  fn:function foo(){
+    console.log(this.name) //小红
+    return function bar(){
+      console.log(this.name) //小明
+    }
+  }
+}
+
+//obj.fn()()
+//等价于
+const fn1 = obj.fn() // 函数fn调用 被obj拥有 this指向fn
+fn1() // fn1独立调用 this指向全局

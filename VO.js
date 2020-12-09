@@ -148,7 +148,7 @@ bar.EC = {
 }
 */
 
-var a = 20;
+/* var a = 20;
 
 function foo() {
   if (!a) {
@@ -160,4 +160,22 @@ function foo() {
   return a;
 }
 
-console.log(foo());
+console.log(foo());  // 10*/ 
+
+
+//console.log(a)
+
+
+function a(){
+    
+    function b(){
+       console.log('b')
+    }
+
+    function c(){
+         
+        b()
+    }
+    c()
+}
+a()
