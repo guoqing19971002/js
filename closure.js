@@ -35,7 +35,7 @@ result2(); */
 return出去。再父函数外部引用此子函数。
 
  */
- globalThis.name = '小红'
+/*  globalThis.name = '小红'
  const obj = {
     name:'小刚',
     fn:function foo(){
@@ -45,9 +45,26 @@ return出去。再父函数外部引用此子函数。
            console.log(this.name)
         }
     }
- }
+ } */
  
 
- const fn1 = obj.fn() //函数fn被调用 拥有者是foo 因此this指向obj 小刚
- fn1.call(obj) // 函数fn被调用 拥有者是全局 小红 可以用call将this指向obj
+ //const fn1 = obj.fn() //函数fn被调用 拥有者是foo 因此this指向obj 小刚
+ //fn1.call(obj) // 函数fn被调用 拥有者是全局 小红 可以用call将this指向obj
  //console.log(fn()) // fn函数访问了 foo函数的内部变量name 闭包形成
+
+
+ /*
+ 形成闭包的两种方式
+ 1 函数自己return 一个函数 该函数可以访问自己的内部变量
+ 2 函数内部将私有变量赋给一个全局变量 
+ */
+let a = null
+ function foo (){
+     const name = 'xiaom1'
+     function getName (){
+         return name
+     }
+     a = getName
+ }
+foo()
+console.log(a())

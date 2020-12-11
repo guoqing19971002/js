@@ -92,3 +92,7 @@ const obj = {
 //等价于
 const fn1 = obj.fn() // 函数fn调用 被obj拥有 this指向fn
 fn1() // fn1独立调用 this指向全局
+
+
+
+/* 箭头函的this */
