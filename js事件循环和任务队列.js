@@ -11,7 +11,7 @@ Object.observe()等。要注意的是promise自身时同步的，而.then方法�
 进入微任务队列依次执行，若微任务中又包含下属的宏任务或微任务，则继续推入相应的任务队列。执行完微任务队列再进入宏任务队列
 依次执行，以此往复即js事件循环机制。下面看一个例子
  */
-  setTimeout(() => { // 宏任务1，进入任务队列
+ /*  setTimeout(() => { // 宏任务1，进入任务队列
     new Promise(resolve => { 
         console.log('promise1') //此时new promise里的代码，属于宏任务，而promise的then方法是微任务。
                             // promise本身是同步的，但then方法是异步的，会进入微任务队列 
@@ -32,7 +32,7 @@ new Promise(resolve => {
         })
     })
 
-console.log('over') // 直接打印
+console.log('over') // 直接打印 */
 
  /* 第一次执行结果 打印'main','promise2','over',微任务队列有微任务1，宏任务队列有宏任务1
  第二次执行微任务队列，打印'then'，定时器宏任务进入宏任务队列

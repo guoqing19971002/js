@@ -14,14 +14,189 @@
   
  */
 
-let a = 2
-let b = a
-b = 3
-console.log(a,b)//2,3
-let obj1 = {
-    name:'小名',
-    age:18
+// let a = 2
+// let b = a
+// b = 3
+// console.log(a,b) //2,3
+// let obj1 = {
+//     name:'小明',
+//     age:18
+// }
+// let obj2 = obj1
+// obj2.name = '小红'
+// console.log(obj1) // { name: '小红', age: 18 } */
+
+
+// {} = {} [] = [] false
+/* const obj = {
+  a:1,
+  b:{
+    c:2
+  }
 }
-let obj2 = obj1
-obj2.name = '小红'
-console.log(obj1) // { name: '小红', age: 18 }
+let target = {}
+Object.assign(target,obj)
+console.log(target) // { a: 1, b: { c: 2 } }
+obj.a = 11
+obj.b.c = 3
+console.log(target) // { a: 1, b: { c: 3 } } */
+// 并不是普通的对象复制 即直接把指针赋值 而是在内存中创建了第一层级 
+// 第二层级时普通类型 改变不受影响 引用类型则还是指针的复制
+/* const sym = Symbol('haha')
+obj[sym] = '111'
+Object.keys(obj).forEach(key => {
+  console.log(key)
+})
+console.log(obj)
+Reflect.ownKeys(obj).forEach(key => { // 该方法可以访问symbol类型
+  console.log(key)
+})
+ */
+
+
+/*  const arr = [1,2,3]
+
+ Reflect.ownKeys(arr).forEach(key => {
+   console.log(arr[key])
+ }) */
+
+/* deepclone */
+
+/* const obj1 = {
+  a:1,
+  b:{
+    c:2
+  }
+}
+obj1[sym] = 111 */
+
+function isObject(obj) { // null、对象、数组返回的都是object类型
+  return (typeof obj === 'object' || typeof obj === 'function') && obj !== null
+}
+/* function DeepClone(obj){
+
+  if (!isObject(obj)) {
+    throw new Error('obj 不是一个对象！')
+  }
+  
+  const _obj = Array.isArray(obj)? []:{}
+
+  Reflect.ownKeys(obj).forEach(key => {
+
+    _obj[key] = isObject(obj[key])? DeepClone(obj[key]) : obj[key] 
+
+  })
+
+  return _obj
+
+} */
+
+
+/* const obj2 = DeepClone(obj1)
+
+obj1.b.c = 4
+
+console.log(obj1,obj2) */
+/* let arr1 = [1,2,{
+  a:1
+}]
+let arr2 = DeepClone(arr1)
+arr1[2].a = 3
+
+console.log(arr1,arr2) */
+function shallowClone (obj){
+
+  if (!isObject(obj)) {
+    throw new Error('obj 不是一个对象！')
+  }
+  
+  const _obj = Array.isArray(obj)? []:{}
+
+  Reflect.ownKeys(obj).forEach(key => {
+
+    _obj[key] = obj[key] 
+
+  })
+
+  return _obj
+
+}
+
+/* let obj1 = {
+  a:1,
+  b:{
+    c:2
+  }
+} */
+/* let arr1 = [1,2,{
+  a:3
+}]
+
+let arr2 = DeepClone(arr1) */
+
+/* arr1[2].a = 4
+arr2[2].a = 5 */
+//console.log(arr1,arr2) // [ 1, 2, { a: 4 } ] [ 1, 2, { a: 5 } ]
+//console.log(obj1,obj2) // { a: 1, b: { c: 4 } } { a: 1, b: { c: 5 } }
+//可以看到深拷贝得到的对象 与原对象没有关联
+
+/* let obj = {}
+let obj1 = {
+  a:1,
+  b:2
+} */
+let sym = Symbol('Symbol')
+/* obj1[sym] = 111
+
+obj = shallowClone(obj1)
+
+console.log(obj1,obj) // { a: 1, b: 2, [Symbol(Symbol)]: 111 } { a: 1, b: 2, [Symbol(Symbol)]: 111 }
+
+console.log(obj1 === obj) // false */
+
+/* let arr1 = [1,2,{
+  a:3
+}]
+let arr2 = DeepClone(arr1)
+arr1[2].a = 4
+console.log(arr2)
+arr2[5] = 6
+console.log(arr2)
+ */
+
+/* let obj1 = {
+  a:1,
+  b:{
+    c:2
+  }
+}
+let obj2 = DeepClone(obj1)
+
+obj1.b.c = 4
+
+console.log(obj2) */
+
+
+function DeepClone(obj) {
+  return JSON.parse(JSON.stringify(obj))
+}
+
+let obj1 = {
+  a:1,
+  b:{
+    c:2
+  },
+  f:function(){
+    console.log('aaa')
+  }
+}
+
+let obj2 = DeepClone(obj1)
+
+obj1.f = function(){
+  console.log('fff')
+}
+
+obj1.b.c = 4
+console.log(obj2) // { a: 1, b: { c: 2 } }
+obj1.f()
