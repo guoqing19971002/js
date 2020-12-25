@@ -40,7 +40,7 @@
        每次都判断一下是不是包含在该数组里，但这样非常浪费性能。因为每次都要做同样的循环。
        那么这样重复的循环能不能只做一次呢？   */
 
-    let tags = 'div,p,a,img,ul,li'.split(',');
+  /*   let tags = 'div,p,a,img,ul,li'.split(',');
     
       function makeMap( keys ) {
       let set = {}; // 集合
@@ -54,7 +54,7 @@
     let isHTMLTag = makeMap( tags ); // 返回的函数
 
     console.log(isHTMLTag('div'))
-    console.log(isHTMLTag('menu'))
+    console.log(isHTMLTag('menu')) */
 
     // 10 个标签需要判断, 那么还有没有循环存在??? 有 但只需要一次循环
     // 立即推 遇到这样的需要多次判断某个数据集合里有没有某个值就可以参考这种做法
@@ -66,3 +66,15 @@
     // 闭包应用之函数柯里化 
     // 闭包应用之实现私有变量
 
+
+  function add(a) {
+      return function(b) {
+          return function(c) {
+              console.log(a + b + c) 
+          }
+      }
+  }
+
+  add(1)(3)(2)
+
+  // 将每一层传入的参数收集起来 在最底层处理
