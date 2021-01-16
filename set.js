@@ -77,3 +77,5 @@ console.log(s.has(2))
 1.WeakSet 的成员只能是对象（type of 为object的值）
 2.WeakSet 中的对象都是弱引用 垃圾回收机制不考虑weakSet的引用。
  */
+
+ 

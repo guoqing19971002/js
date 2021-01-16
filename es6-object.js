@@ -11,3 +11,6 @@ console.log(Object.is(NaN,NaN)) // true
 
 //Object.keys() 返回所有可遍历的键名 Object.values() 返回所有可遍历的键值，会过滤属性名为 Symbol 值的属性
 // Object.entries() 返回可遍历的键值对数组
+
+//Object.isExtensible() 判断一个对象是否可扩展 即可否添加新属性
+// ownKeys() 

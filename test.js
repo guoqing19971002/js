@@ -1,4 +1,4 @@
-function fn(i){
+/* function fn(i){
     return new Promise((resolve, reject) => {
 
         setTimeout(function (i) {
@@ -23,3 +23,14 @@ fn(5).then((value) => {
     console.log(err)
 });
 console.log('next')
+ */
+
+ const foo = {
+     name:{
+         bar:'111'
+     }
+ }
+
+ const { bar } = foo.name
+
+ console.log(bar)

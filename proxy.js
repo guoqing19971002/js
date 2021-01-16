@@ -34,3 +34,9 @@ Proxy 可以理解成，在目标对象之前架设一层“拦截”，外界�
  // 1. get方法 用于拦截某个属性的读取操作
  // 2. set方法用来拦截某个属性的赋值操作
  // 3. apply方法拦截函数的调用、call和apply操作。
+ // 4. has()方法拦截判断对象是否具有某个属性。典型操作是in运算符。注意两点 1.has()方法不判断一个属性是对象自身的属性，还是继承的属性。2.对 for in 不生效
+ // 5. construct()拦截new命令 目标对象必须是函数
+ // 6. deleteProperty() 拦截delete操作.如果该方法抛出错误或者返回false，当前属性就无法被delete命令删除。
+ // 7. defineProperty()方法 拦截Object.defineProperty()
+ // 8. getOwnPropertyDescriptor()方法拦截Object.getOwnPropertyDescriptor()
+ // getPrototypeOf()方法主要用来拦截获取对象原型
