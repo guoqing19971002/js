@@ -1,6 +1,6 @@
-// 防抖概念 短时间内多次触发统一操作 只执行最后一次
+// 防抖概念 短时间内多次触发同一操作 只执行最后一次
 // 应用场景 表单输入验证 多次触发ajax
-// 核心思想 1.通过定时器延迟执行。 2.再次触发时，清楚定时器并开启新的定时器。
+// 核心思想 1.通过定时器延迟执行。 2.再次触发时，清除定时器并开启新的定时器。
 
 let timer = null
 
@@ -43,7 +43,7 @@ function throttle (fn,interval,trailing=false){
 
     return function(...args){
 
-        if (timer) clearTimeout(timer); // 清楚最后一次的定时器
+        if (timer) clearTimeout(timer); // 清除最后一次的定时器
 
         const now = new Date()
 
