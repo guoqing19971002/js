@@ -62,3 +62,16 @@ let newArr1 = arr1.reduce((pre,cur)=>{
   return pre
 },[])//pre初始值为[]
 console.log(newArr1); //[ 1, 2, 3, 4, 5, 6 ]
+
+
+//reduce实现map方法
+
+Array.prototype.myMap = function (fn){
+ return this.reduce((pre,cur)=>{
+    pre.push(fn(cur))
+    return pre
+  },[])
+}
+
+const foo = [1,2,4]
+console.log(foo.myMap(x => x*2)) // 2,4,8
