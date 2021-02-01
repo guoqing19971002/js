@@ -5,6 +5,7 @@ function foo (age){
     console.log(this.name + '的年龄是'+  `${age}`)
 }
 foo.__proto__.myApply= function (){
+    //获取this要指向的对象
     const obj = Array.prototype.slice.call(arguments)[0]
     const params = Array.prototype.slice.call(arguments).splice(1)
     /* params非数组时抛出错误 */

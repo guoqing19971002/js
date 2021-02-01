@@ -37,7 +37,7 @@ function debounce (fn, delay,immediate = false){
 // 应用场景 编辑器语法校验 表单输入联想 resize/scroll/touch/mouseove 事件
 // 核心思想 利用当前触发时间与上次执行的时间差来限制执行次数
 
-let previous = 0; // 上次执行时间
+
 // trailing 最后一次是否执行
 function throttle (fn,interval,trailing=false){
 

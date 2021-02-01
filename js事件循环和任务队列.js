@@ -11,17 +11,17 @@ Object.observe()等。要注意的是promise自身时同步的，而.then方法�
 进入微任务队列依次执行，若微任务中又包含下属的宏任务或微任务，则继续推入相应的任务队列。执行完微任务队列再进入宏任务队列
 依次执行，以此往复即js事件循环机制。下面看一个例子
  */
- /*  setTimeout(() => { // 宏任务1，进入任务队列
+setTimeout(() => { // 宏任务1，进入任务队列
     new Promise(resolve => { 
-        console.log('promise1') //此时new promise里的代码，属于宏任务，而promise的then方法是微任务。
-                            // promise本身是同步的，但then方法是异步的，会进入微任务队列 
+        console.log('promise1')          
         resolve('setTimeout1')
     }).then((res) =>{
-            console.log(res)
+        console.log(res)
+        Promise.resolve().then(()=>{console.log('sdgdfg')})
     })
  
 });
-console.log('main') // 此处是主线程的同步任务，直接打印
+console.log('main') // 主线的同步任务，直接打印
 new Promise(resolve => { 
         console.log('promise2') // 直接打印
         resolve()
@@ -32,7 +32,7 @@ new Promise(resolve => {
         })
     })
 
-console.log('over') // 直接打印 */
+console.log('over') // 直接打印
 
  /* 第一次执行结果 打印'main','promise2','over',微任务队列有微任务1，宏任务队列有宏任务1
  第二次执行微任务队列，打印'then'，定时器宏任务进入宏任务队列
@@ -43,7 +43,7 @@ console.log('over') // 直接打印 */
 
 
 // 为进一步体现有微则微，无微则宏的概念，看以下例子
-setTimeout(() => { 
+/* setTimeout(() => { 
     new Promise(resolve => { 
         console.log('3') 
         resolve()
@@ -84,5 +84,13 @@ new Promise(resolve => {
         setTimeout(() =>{
          console.log('10')
         })
-    })
+    }) */
 // 代码打印结果为1 2 3 4 5 6 7 8 9 10
+
+/* console.log('a')
+setTimeout(() => {
+    console.log('b')
+})
+console.log('c')
+Promise.resolve().then(()=>{console.log('d')}) */
+ // a c d b

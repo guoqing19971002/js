@@ -76,7 +76,7 @@ active(obj.getA); //20 */
 
 /* 高阶函数的this */
 
-globalThis.name = '小明'
+/* globalThis.name = '小明'
 
 const obj = {
   name:'小红',
@@ -92,7 +92,14 @@ const obj = {
 //等价于
 const fn1 = obj.fn() // 函数fn调用 被obj拥有 this指向fn
 fn1() // fn1独立调用 this指向全局
-
+ */
 
 
 /* 箭头函的this */
+
+
+window.name = '123'
+function say(){
+   console.log(this.name) // 123
+}
+say()

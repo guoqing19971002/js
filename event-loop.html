@@ -7,6 +7,19 @@
     <script src="./js事件循环和任务队列.js"></script>
 </head>
 <body>
+
+    <span id="app">
+       123
+    </span>
+
+    <script>
+        setTimeout(()=>{
+            app.innerText = "456"
+        },2000)
+        Promise.resolve().then(()=>{
+            app.innerText= "789"
+        })
+    </script>
     
 </body>
 </html>
