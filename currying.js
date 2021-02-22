@@ -1,6 +1,6 @@
- // 柯里化定义 为什么用柯里化 闭包
+// 柯里化定义 为什么用柯里化 闭包
 
-    /*
+/*
     定义 把接受多个参数的函数变换成接受一个单一参数（最初函数的第一个参数）的函数，
     并且返回接受余下的参数而且返回结果的新函数的技术。 
 
@@ -33,14 +33,13 @@
     其实就是需要将第一个参数reg进行复用，
     这样别的地方就能够直接调用hasNumber，hasLetter等函数，让参数能够复用，调用起来也更方便。
         */
-       
 
-    /* 2 减少循环 提升性能
+/* 2 减少循环 提升性能
        vue中如何判断一个标签是html标签还是自定义组件 可以进行枚举 把所有的html标签存起来
        每次都判断一下是不是包含在该数组里，但这样非常浪费性能。因为每次都要做同样的循环。
        那么这样重复的循环能不能只做一次呢？   */
 
-  /*   let tags = 'div,p,a,img,ul,li'.split(',');
+/*   let tags = 'div,p,a,img,ul,li'.split(',');
     
       function makeMap( keys ) {
       let set = {}; // 集合
@@ -56,16 +55,11 @@
     console.log(isHTMLTag('div'))
     console.log(isHTMLTag('menu')) */
 
-    // 10 个标签需要判断, 那么还有没有循环存在??? 有 但只需要一次循环
-    // 立即推 遇到这样的需要多次判断某个数据集合里有没有某个值就可以参考这种做法
+// 10 个标签需要判断, 那么还有没有循环存在??? 有 但只需要一次循环
+// 立即推 遇到这样的需要多次判断某个数据集合里有没有某个值就可以参考这种做法
 
-      
-       
- 
-
-    // 闭包应用之函数柯里化 
-    // 闭包应用之实现私有变量
-
+// 闭包应用之函数柯里化
+// 闭包应用之实现私有变量
 
 /*   function add(a) {
       return function(b) {
@@ -77,9 +71,9 @@
 
   add(1)(3)(2) */
 
-  // 将每一层传入的参数收集起来 在最底层处理
+// 将每一层传入的参数收集起来 在最底层处理
 
-
+/* 
   function add() {
     // 第一次执行时，定义一个数组专门用来存储所有的参数
     var _args = [].slice.call(arguments);
@@ -101,12 +95,16 @@
 
         return _adder;
     }
-    // return adder.apply(null, _args);
     return adder(..._args);
 }
 
-var a = add(1)(2)(3)(4);   // f 10
-var b = add(1, 2, 3, 4);   // f 10
+// add() = adder() = _adder()
+// 举例  add(1)(2)
+// 1 adder(1)(2)
+// 2 _adder(2)  带括号 直接执行  _args[1]
+// 3 _adder 不带括号 执行隐式转换 求和 _args[1,2]
+var a = add(1)(2)(3)(4);   // f 10  _adder()
+var b = add(1, 2, 3, 4);   // f 10  
 var c = add(1, 2)(3, 4);   // f 10
 var d = add(1, 2, 3)(4);   // f 10
 
@@ -120,4 +118,28 @@ console.log(d + 40); // 50
 console.log(a(10) + 100);  // 120
 console.log(b(10) + 100);  // 120
 console.log(c(10) + 100);  // 120
-console.log(d(10) + 100);  // 120
+console.log(d(10) + 100);  // 120 */
+
+/* function curring(reg) {
+  return (str) => {
+    return reg.test(str);
+  };
+}
+var checkPhone = curring(/^1[34578]\d{9}$/);
+var checkEmail = curring(/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/);
+
+console.log(checkPhone("183888888")); // false
+console.log(checkPhone("17654239819")); // true
+console.log(checkEmail("exy@163.com")); // true */
+
+let tags = "div,p,a,img,ul,li".split(",");
+function makeMap(keys) {
+  let set = {}; // 集合
+  tags.forEach((key) => (set[key] = true));
+  return function (tagName) {
+    return !!set[tagName.toLowerCase()];
+  };
+}
+let isHTMLTag = makeMap(tags);
+console.log(isHTMLTag('Menu')) // false
+console.log(isHTMLTag('div')) // true

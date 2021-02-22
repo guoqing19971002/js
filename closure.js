@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-10-21 13:43:57
- * @LastEditTime: 2021-02-21 14:28:52
+ * @LastEditTime: 2021-02-22 14:42:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \js\closure.js
@@ -161,15 +161,18 @@ const newFoo = foo.myBind(obj1)
 newFoo('跑步')
  */
 
-function sayName(fn) {
-   console.log(fn())
+function foo(action) {
+  console.log(this.name + action);
 }
-function foo() {
-  const name = '小明';
-  function bar() {
-    return name;
-  }
-  sayName(bar)
-}
-foo();
-
+const obj1 = {
+  name: "小明",
+};
+foo.__proto__.myBind = function () {
+  const obj = Array.prototype.slice.call(arguments)[0];
+  const fun = this;
+  return function (args) {
+    fun.call(obj, args);
+  };
+};
+const newFoo = foo.myBind(obj1);
+newFoo("跑步"); // 小明跑步
