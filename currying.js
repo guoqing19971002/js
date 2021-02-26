@@ -132,7 +132,7 @@ console.log(checkPhone("183888888")); // false
 console.log(checkPhone("17654239819")); // true
 console.log(checkEmail("exy@163.com")); // true */
 
-let tags = "div,p,a,img,ul,li".split(",");
+/* let tags = "div,p,a,img,ul,li".split(",");
 function makeMap(keys) {
   let set = {}; // 集合
   tags.forEach((key) => (set[key] = true));
@@ -142,4 +142,37 @@ function makeMap(keys) {
 }
 let isHTMLTag = makeMap(tags);
 console.log(isHTMLTag('Menu')) // false
-console.log(isHTMLTag('div')) // true
+console.log(isHTMLTag('div')) // true */
+
+
+/* function foo() {
+  console.log(this.name);
+}
+const obj = {
+  name: "xiaom",
+};
+const obj1 = {
+  name:'xiaoh'
+}
+function curryingFn(fn) {
+  return (obj) => {     
+    return fn.bind(obj)
+  }
+}
+const newFoo = curryingFn(foo)
+newFoo(obj)() // xiaom
+newFoo(obj1)() // xiaoh */
+function foo() {
+  console.log(this.name);
+}
+const obj = {
+  name: "xiaom",
+};
+const obj1 = {
+  name:'xiaoh'
+}
+function bindThis(fn, obj) {
+  return fn.bind(obj);
+}
+bindThis(foo, obj)(); //xiaom
+bindThis(foo, obj1)(); //xiaoh

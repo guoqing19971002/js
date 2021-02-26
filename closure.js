@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-10-21 13:43:57
- * @LastEditTime: 2021-02-22 14:42:39
+ * @LastEditTime: 2021-02-24 16:33:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \js\closure.js
@@ -167,8 +167,7 @@ function foo(action) {
 const obj1 = {
   name: "小明",
 };
-foo.__proto__.myBind = function () {
-  const obj = Array.prototype.slice.call(arguments)[0];
+foo.__proto__.myBind = function (obj) {
   const fun = this;
   return function (args) {
     fun.call(obj, args);
