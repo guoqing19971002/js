@@ -105,7 +105,7 @@ function say(){
 say() */
 
 
-var o = {
+/* var o = {
   a: 10,
   b: {
     a: 12,
@@ -118,4 +118,14 @@ var o = {
 
 var j = o.b.fn;
 j();
-o.b.fn();
+o.b.fn(); */
+var a = 1;
+var obj = {
+  a: 2,
+  b: function() {
+    return this.a;
+  }
+};
+var t = obj.b;
+console.log(t());
+console.log(obj.b())
