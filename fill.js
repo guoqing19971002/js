@@ -11,3 +11,6 @@ Array.prototype._fill = function (num, i = 0, stn = this) {
 
 console.log([1, 2, 3]._fill(7));
 console.log(new Array(4)._fill(7));
+let arr = [1,2,3]
+arr._fill(8)
+console.log(arr)
