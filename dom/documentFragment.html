@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 直接插入的缺点
+	    使用这种方法效率会非常低，甚至会在页面出现闪屏、卡屏的现象。因为每次调用appendChild()方法时，
+		浏览器都会重新渲染页面。如果大量的更新DOM节点，则会非常消耗性能，影响用户体验。  
+	   */
+
+      /* JavaScript提供了一个文档片段DocumentFragment的机制。
+		把所有要构造的节点都放在文档片段中执行，这样可以不影响文档树，也就不会造成页面渲染。
+		当节点都构造完成后，再将文档片段对象添加到页面中，这时所有的节点都会一次性渲染出来，
+		这样就能减少浏览器负担，提高页面渲染速度。
+       */
+      var container = document.getElementById("container");
+      var fragment = document.createDocumentFragment();
+      for (let i = 0; i < 10000; i++) {
+        let li = document.createElement("li");
+        li.innerHTML = "hello world";
+        fragment.appendChild(li);
+      }
+      container.appendChild(fragment);
+    </script>
+  </body>
+</html>
