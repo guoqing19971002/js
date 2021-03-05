@@ -119,7 +119,7 @@ say() */
 var j = o.b.fn;
 j();
 o.b.fn(); */
-var a = 1;
+/* var a = 1;
 var obj = {
   a: 2,
   b: function() {
@@ -128,4 +128,15 @@ var obj = {
 };
 var t = obj.b;
 console.log(t());
-console.log(obj.b())
+console.log(obj.b()) */
+
+const obj = {
+  foo:'xiaom',
+  say:function () {
+    console.log(this.foo)
+  }
+}
+
+obj.say()
+const {say } = obj
+say.bind(obj)()
