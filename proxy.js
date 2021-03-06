@@ -5,10 +5,11 @@
 3 监视数据发生变化时回调
 
 */
-watchEffect(() => {
+/* watchEffect(() => {
   console.log("watchEffect");
   person.name = user.firstName + "-" + user.lastName;
-});
+}); */
+
 /* 梳理出大致思路，首先将数据进行响应化处理，将数据的get和set进行拦截。触发get时进行依赖收集,即将当前依赖与其在
 watchEffect中指定的回调函数进行关联,set时执行相应依赖在watchEffect中指定的回调函数。以上操作可以使用es6的proxy来实现。
 
@@ -65,7 +66,7 @@ Proxy 可以理解成，在目标对象之前架设一层“拦截”，外界�
 
 /*
  首先用proxy实现数据响应化，搭一个整体结构。实现get，set的拦截。
- 订阅发布模式（看篇幅决定是否展开）
+ 发布订阅模式（看篇幅决定是否展开）
   */
 
 function isObj(obj) {
@@ -78,7 +79,7 @@ function observe(obj) {
   }
   return new Proxy(obj, {
     get(target, key, receiver) {
-      // console.log(key + '被收集');
+      //console.log(key + "被收集");
       const res = Reflect.get(target, key, receiver); // proxy中的每个方法都与reflect中的同名方法对应
 
       //  依赖收集 v2中这里是将dep和watcher相互关联
@@ -88,7 +89,7 @@ function observe(obj) {
       return isObj(obj) ? observe(res) : res;
     },
     set(target, key, val, receiver) {
-      // console.log("set", key);
+      //console.log("set", key);
 
       const res = Reflect.set(target, key, val, receiver);
       // 派发更新
@@ -150,7 +151,6 @@ function track(target, key) {
       depMap = new Map(); // 很明白
       targetMap.set(target, depMap);
     }
-
     // 获取key对象的set
     let deps = depMap.get(key); // 这个deps相当于v2 dep对象中deps属性,是一个数组,存储了所有观察自己的watcher
     // 而这里的结构是set
@@ -159,7 +159,6 @@ function track(target, key) {
       deps = new Set();
       depMap.set(key, deps);
     }
-
     deps.add(effect); // map的添加方法 给当前set加一个回调函
   }
 }
@@ -179,32 +178,52 @@ function trigger(target, key) {
 
 /* 最后实现watchEffect,分为三部,全局挂载回调函数，执行回调函，踢出回调函*/
 
-function effect(fn) {
+function watchEffect(fn) {
   cb = fn;
-  // 触发依赖收集
-  fn();
+  fn(); // 触发依赖收集
   cb = null;
 }
 
-const foo = observe({
-  name: "xiaom",
+let firstName = observe({ value: "李" });
+let lastName = observe({ value: "云龙" });
+let fullName = "";
+let obj = observe({
   wife: {
-    name: "xiaoh",
+    name: "秀芹",
+  },
+});
+watchEffect(() => {
+  fullName = firstName.value + lastName.value;
+  console.log(fullName);
+});
+watchEffect(() => {
+  console.log(obj.wife.name);
+});
+firstName.value = "赵";
+lastName.value = "刚";
+obj.wife.name = "冯楠";
+
+// 用法如下,target是目标对象,handler参数也是一个对象，用来定制拦截行为。
+// var proxy = new Proxy(target, handler);
+// 返回的是代理对象,后面所有的操作都是操作代理对象而不是目标对象
+/* Reflect对象的方法与Proxy对象的方法一一对应，只要是Proxy对象的方法，
+    就能在Reflect对象上找到对应的方法。这就让Proxy对象可以方便地调用对应的Reflect方法，完成默认行为  */
+/* const obj = {
+  name: "xiaom",
+};
+const objProxy = new Proxy(obj, {
+  get(target, key) {
+    console.log("get", key);
+    
+    return Reflect.get(target, key);
+  },
+  set(target, key, val) {
+    console.log("set", key, val);
+    const res = Reflect.set(target, key, val);
+    return res;
   },
 });
 
-effect(() => {
-  console.log(foo.name);
-});
-
-effect(() => {
-  console.log(foo.name, "第二个");
-});
-
-effect(() => {
-  console.log(foo.wife.name);
-});
-
-foo.name = "xiaoh";
-foo.name = "xiaol";
-foo.wife.name = "xiaopp";
+console.log(objProxy.name);
+objProxy.name = "xiaom";
+console.log(objProxy.name); */
