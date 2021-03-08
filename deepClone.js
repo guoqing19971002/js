@@ -26,7 +26,6 @@
 // obj2.name = '小红'
 // console.log(obj1) // { name: '小红', age: 18 } */
 
-
 // {} = {} [] = [] false
 /* const obj = {
   a:1,
@@ -40,7 +39,7 @@ console.log(target) // { a: 1, b: { c: 2 } }
 obj.a = 11
 obj.b.c = 3
 console.log(target) // { a: 1, b: { c: 3 } } */
-// 并不是普通的对象复制 即直接把指针赋值 而是在内存中创建了第一层级 
+// 并不是普通的对象复制 即直接把指针赋值 而是在内存中创建了第一层级
 // 第二层级时普通类型 改变不受影响 引用类型则还是指针的复制
 /* const sym = Symbol('haha')
 obj[sym] = '111'
@@ -52,7 +51,6 @@ Reflect.ownKeys(obj).forEach(key => { // 该方法可以访问symbol类型
   console.log(key)
 })
  */
-
 
 /*  const arr = [1,2,3]
 
@@ -70,9 +68,9 @@ Reflect.ownKeys(obj).forEach(key => { // 该方法可以访问symbol类型
 }
 obj1[sym] = 111 */
 
-function isObject(obj) { // null、对象、数组返回的都是object类型
+/* function isObject(obj) { // null、对象、数组返回的都是object类型
   return (typeof obj === 'object' || typeof obj === 'function') && obj !== null
-}
+} */
 /* function DeepClone(obj){
 
   if (!isObject(obj)) {
@@ -91,7 +89,6 @@ function isObject(obj) { // null、对象、数组返回的都是object类型
 
 } */
 
-
 /* const obj2 = DeepClone(obj1)
 
 obj1.b.c = 4
@@ -104,7 +101,7 @@ let arr2 = DeepClone(arr1)
 arr1[2].a = 3
 
 console.log(arr1,arr2) */
-function shallowClone (obj){
+/* function shallowClone (obj){
 
   if (!isObject(obj)) {
     throw new Error('obj 不是一个对象！')
@@ -120,7 +117,7 @@ function shallowClone (obj){
 
   return _obj
 
-}
+} */
 
 /* let obj1 = {
   a:1,
@@ -145,7 +142,7 @@ let obj1 = {
   a:1,
   b:2
 } */
-let sym = Symbol('Symbol')
+// let sym = Symbol('Symbol')
 /* obj1[sym] = 111
 
 obj = shallowClone(obj1)
@@ -176,8 +173,7 @@ obj1.b.c = 4
 
 console.log(obj2) */
 
-
-function DeepClone(obj) {
+/* function DeepClone(obj) {
   return JSON.parse(JSON.stringify(obj))
 }
 
@@ -200,3 +196,55 @@ obj1.f = function(){
 obj1.b.c = 4
 console.log(obj2) // { a: 1, b: { c: 2 } }
 obj1.f()
+ */
+function isObject(obj) {
+  // null、对象、数组返回的都是object类型
+  return typeof obj === "object" && obj !== null;
+}
+
+function DeepClone(obj, map = new Map()) {
+  if (!isObject(obj)) {
+    return obj;
+  }
+  const _obj = Array.isArray(obj) ? [] : {};
+  if (map.has(obj)) return map.get(obj);
+  map.set(obj, _obj);
+  Reflect.ownKeys(obj).forEach((key) => {
+    // 引用类型，再次浅拷贝，递归即可
+    _obj[key] = DeepClone(obj[key], map);
+  });
+
+  return _obj;
+}
+let obj1 = {
+  a: 1,
+  b: {
+    c: 2,
+  },
+  d: [1, 2, 3],
+  f: function () {
+    console.log("asd");
+  },
+};
+/* obj1.b.e = obj1.d;
+obj1.d.push(obj1.b);
+const obj2 = DeepClone(obj1);
+console.log(obj2.f);
+obj2.f = function () {
+  console.log("123");
+};
+obj1.f(); */
+
+function shallowClone(obj) {
+  if (!isObject(obj)) {
+    // 该方法判断是不是引用类型
+    throw new Error("obj 不是一个对象！");
+  }
+  const _obj = Array.isArray(obj) ? [] : {};
+  // 使用Reflect.ownKeys可以访问symbol类型
+  Reflect.ownKeys(obj).forEach((key) => {
+    _obj[key] = obj[key];
+  });
+  return _obj;
+}
+
