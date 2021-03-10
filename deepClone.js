@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-11-14 15:26:47
- * @LastEditTime: 2021-03-09 10:16:08
- * @LastEditors: your name
+ * @LastEditTime: 2021-03-10 20:42:06
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \js\deepClone.js
  */
@@ -209,32 +209,35 @@ function isObject(obj) {
   // null、对象、数组返回的都是object类型
   return typeof obj === "object" && obj !== null;
 }
-
-function DeepClone(obj, map = new Map()) {
+// 默认传入一个空字典
+/* function DeepClone(obj, map = new Map()) {
   if (!isObject(obj)) {
     return obj;
   }
   const _obj = Array.isArray(obj) ? [] : {};
-  // 之前已经拷贝过该属性 直接返回 避免栈移除
+  // 之前已经拷贝过该属性 直接返回 避免循环递归
   if (map.has(obj)) return map.get(obj);
   // 未拷贝过 添加到字典中
   map.set(obj, _obj);
   Reflect.ownKeys(obj).forEach((key) => {
-    // 引用类型，再次浅拷贝，递归即可
+   // 每次递归调用时传入该字典
     _obj[key] = DeepClone(obj[key], map);
   });
   return _obj;
+} */
+function DeepClone(obj) {
+  if (!isObject(obj)) {
+    // 非引用类型 直接返回
+    return obj;
+  }
+  const _obj = Array.isArray(obj) ? [] : {};
+  Reflect.ownKeys(obj).forEach((key) => {
+    // 引用类型，再次浅拷贝，递归即可
+    _obj[key] = DeepClone(obj[key]);
+  });
+  return _obj;
 }
-let obj1 = {
-  a: 1,
-  b: {
-    c: 2,
-  },
-  d: [1, 2, 3],
-  f: function () {
-    console.log("asd");
-  },
-};
+
 /* obj1.b.e = obj1.d;
 obj1.d.push(obj1.b);
 const obj2 = DeepClone(obj1);
@@ -244,7 +247,7 @@ obj2.f = function () {
 };
 obj1.f(); */
 
-function shallowClone(obj) {
+/* function shallowClone(obj) {
   if (!isObject(obj)) {
     // 该方法判断是不是引用类型
     throw new Error("obj 不是一个对象！");
@@ -255,5 +258,46 @@ function shallowClone(obj) {
     _obj[key] = obj[key];
   });
   return _obj;
-}
+} */
 
+let obj1 = {
+  a: 1,
+  b: {
+    c: 2,
+  },
+  f: function () {
+    console.log("hello");
+  },
+  date:new Date()
+};
+
+let obj2 = DeepClone(obj1);
+obj2.a = 3;
+obj2.b.c = 4;
+obj2.f()
+console.log(obj2.a, obj1.a); // 3,1 
+console.log(obj1.b.c); // 2  
+console.log(obj1.date)
+console.log(obj2.date)
+
+
+/*
+可以看到，经过浅拷贝得到的对象的第一层级与原对象不会产生关联。
+且Symbol类型，函数类型的属性都可以拷贝。但无法拷贝引用类型,无论时基本类型还是引用类型，都不会产生关联 */
+
+
+/* 
+这种方法只能实现对象和数组的深拷贝。
+对于其他引用类型如function,RegExp等，由于他们的构造函数比较特殊,该方法无法拷贝。
+*/
+
+/*
+每遇到一个引用类型就会递归执行函数，而两个引用类型又相互引用，因此递归会在两个引用类型之间无限执行。
+清楚了原因，问题也就迎刃而解。我们只需记住已经拷贝过的属性，当再次遇到该属性时，直接返回该属性而不进行递归。
+这种思路类似于去重，因此我们可以用字典解决该问题。
+ */
+
+
+/* 
+通过控制台打印结果看到，成功对该对象进行了拷贝且实现了引用类型属性的循环引用。
+*/
