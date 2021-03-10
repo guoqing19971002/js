@@ -9,7 +9,7 @@ arr1.__proto__.foo = function(){
 arr2.foo() */
 
 
-/* let arr = [];
+let arr = [];
 let array_proto = Object.create( Array.prototype );
 
 
@@ -22,12 +22,12 @@ arr.__proto__ = array_proto
 
 arr.push(1,2,3)
 
-console.log(arr) */
+console.log(arr)
 
 
-/* const arr = new Array(1,2,3)
+const arr = new Array(1,2,3)
 console.log(arr)
 arr.__proto__.foo = function(){
     console.log('bar')
 }
-Array.prototype.foo() */
+Array.prototype.foo()

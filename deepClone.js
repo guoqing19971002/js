@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-11-14 15:26:47
+ * @LastEditTime: 2021-03-09 10:16:08
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \js\deepClone.js
+ */
 /* js基本数据类型与引用数据类型与深浅拷贝*/
 /* 1.栈，队列，堆 */
 /* 2.基本数据类型与引用数据类型
@@ -207,13 +215,14 @@ function DeepClone(obj, map = new Map()) {
     return obj;
   }
   const _obj = Array.isArray(obj) ? [] : {};
+  // 之前已经拷贝过该属性 直接返回 避免栈移除
   if (map.has(obj)) return map.get(obj);
+  // 未拷贝过 添加到字典中
   map.set(obj, _obj);
   Reflect.ownKeys(obj).forEach((key) => {
     // 引用类型，再次浅拷贝，递归即可
     _obj[key] = DeepClone(obj[key], map);
   });
-
   return _obj;
 }
 let obj1 = {
