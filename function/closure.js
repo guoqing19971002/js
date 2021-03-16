@@ -1,11 +1,4 @@
-/*
- * @Author: your name
- * @Date: 2020-10-21 13:43:57
- * @LastEditTime: 2021-02-24 16:33:49
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \js\closure.js
- */
+
 /* let count = 10;
 function fn1(){
     let count = 0;
