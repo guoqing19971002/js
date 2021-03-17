@@ -23,7 +23,6 @@ function getDep(node) {
   let depth = 0;
   const dfs = (e, d = 0) => {
     depth = Math.max(d, depth);
-    console.log(e.value)
     if(!e.childNodes) return
     const nodeList = [].slice.call(e.childNodes);
     nodeList.forEach((i) => {
