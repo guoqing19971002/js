@@ -13,6 +13,7 @@ function timeBitmapToRanges(str) {
   let arr = str.split("");
   let res = [];
   let i = 0;
+  // 求出所有1的位置和连续1的长度
   while (i < arr.length) {
     if (arr[i] === "1") {
       let len = 1;
@@ -27,7 +28,7 @@ function timeBitmapToRanges(str) {
       i++;
     }
   }
-
+  
   function getTime(value) {
     let h = value % 2;
     if (h === 0) {
