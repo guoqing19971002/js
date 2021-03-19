@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-11-14 15:26:47
- * @LastEditTime: 2021-03-10 20:42:06
+ * @LastEditTime: 2021-03-18 20:49:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \js\deepClone.js
@@ -259,7 +259,7 @@ obj1.f(); */
   });
   return _obj;
 } */
-
+/* 
 let obj1 = {
   a: 1,
   b: {
@@ -278,7 +278,7 @@ obj2.f()
 console.log(obj2.a, obj1.a); // 3,1 
 console.log(obj1.b.c); // 2  
 console.log(obj1.date)
-console.log(obj2.date)
+console.log(obj2.date) */
 
 
 /*
@@ -301,3 +301,25 @@ console.log(obj2.date)
 /* 
 通过控制台打印结果看到，成功对该对象进行了拷贝且实现了引用类型属性的循环引用。
 */
+
+
+
+/*
+原型属性的拷贝
+*/
+
+const obj = {
+  name:'xiaom'
+}
+
+const foo = Object.create(obj)
+
+foo.age = 18
+//console.log(Object.getOwnPropertyNames(foo))
+// console.log(foo.name)
+for(let i in foo){
+  console.log(i)
+}
+
+const bar = DeepClone(foo)
+// console.log(bar.name)
