@@ -80,6 +80,7 @@ for (let [key, value] of objectEntries(jane)) {
 }
 // 区别是 手动部署[symbol itorter]属性 for of 可以直接遍历原对象，会自动去遍历[symbol itorter]属性的遍历器对象
 // gengerter方式 for of 遍历的是生成的遍历器对象
+
 // 二者结合使用 那就是把gengerter生成的遍历器对象 赋值给[symbol itorter]属性
 
 /*
@@ -92,4 +93,75 @@ return()是将yield表达式替换成一个return语句。
 
 /* 
 yield*表达式
+用来在一个 Generator 函数里面执行另一个 Generator 函数。
+不然 就要手动遍历了。
+yield*后面的 Generator 函数（没有return语句时），等同于在 Generator 函数内部，部署一个for...of循环。
+ */
+
+function* iter1() {
+  yield "a";
+  yield "b";
+}
+
+function* iter2() {
+  yield "c";
+  yield "d";
+}
+
+function* concat() {
+  yield* iter1(); // 必须调用后才返回遍历器对象！
+  yield* iter2();
+}
+
+// 等同于
+
+/* function* concat() {
+  for (var value of iter1()) {
+    yield value;
+  }
+  for (var value of iter2()) {
+    yield value;
+  }
+} */
+/* 
+for (let i of concat()) {
+  console.log(i);
+} */
+
+/*
+任何数据结构只要有 Iterator 接口，就可以被yield*遍历。 
+ */
+
+/*
+Generator 是实现状态机的最佳结构 
+ */
+/* var clock = function* () {
+  while (true) {
+    console.log('Tick!');
+    yield;
+    console.log('Tock!');
+    yield;
+  }
+}; */
+
+function* load() {
+  console.log("1");
+  const res = yield setTimeout(() => {
+    it.next(2);
+  }, 200);
+  console.log(res)
+  console.log("3");
+}
+
+const it = load();
+it.next();
+console.log('4')
+
+/*
+等异步操作拿到结果 再执行next 继续向下执行代码 。注意要把回调结果传入next() 
+因为yield表达式没有返回值。
+yield后面的异步表达式，之后的代码。其实就可以看做回调函，或者then方法。
+不会阻塞线程，实质就是异步的语法糖！
+it.next(param)做的就是 通知generter 异步操作有结果了 可以继续执行了。并将结果传递出去。
+而async/await 就是由包了一层语法糖
  */
