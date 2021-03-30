@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2021-03-28 16:21:39
- * @LastEditTime: 2021-03-28 16:26:01
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \js\async.js
- */
 async function async1 () {
     console.log('async1 start')
     await async2()
@@ -20,11 +12,11 @@ async function async1 () {
   async function async3 () {
     console.log('async3')
   }
-  console.log('script start');
+  /* console.log('script start');
   (async function(){
     await async1()
     console.log('script end');
-  })()
+  })() */
  
   /*
    script start
@@ -43,3 +35,11 @@ async function async1 () {
    async1 end2
    script end
    */
+
+
+   (async function (){
+     const a = async function (){
+       return 100
+     }
+     console.log(a)
+   })()

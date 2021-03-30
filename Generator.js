@@ -25,9 +25,9 @@ function* foo(x) {
 }
 
 var a = foo(5);
-a.next(); // Object{value:6, done:false}
-a.next(); // Object{value:NaN, done:false}
-a.next(); // Object{value:NaN, done:true}
+// a.next(); // Object{value:6, done:false}
+// a.next(); // Object{value:NaN, done:false}
+// a.next(); // Object{value:NaN, done:true}
 var b = foo(5);
 // console.log(b.next());// { value:6, done:false }
 // console.log(b.next(12));// { value:8, done:false }
@@ -75,9 +75,9 @@ function* objectEntries(obj) {
 
 let jane = { first: "Jane", last: "Doe" };
 
-for (let [key, value] of objectEntries(jane)) {
+/* for (let [key, value] of objectEntries(jane)) {
   console.log(`${key}: ${value}`);
-}
+} */
 // 区别是 手动部署[symbol itorter]属性 for of 可以直接遍历原对象，会自动去遍历[symbol itorter]属性的遍历器对象
 // gengerter方式 for of 遍历的是生成的遍历器对象
 
@@ -149,14 +149,14 @@ function* load() {
   const res = yield setTimeout(() => {
     it.next(2);
   }, 200);
-  console.log(res)
+  console.log(res);
   console.log("3");
 }
 
-const it = load();
+/* const it = load();
 it.next();
 console.log('4')
-
+ */
 /*
 等异步操作拿到结果 再执行next 继续向下执行代码 。注意要把回调结果传入next() 
 因为yield表达式没有返回值。
@@ -164,4 +164,60 @@ yield后面的异步表达式，之后的代码。其实就可以看做回调函
 不会阻塞线程，实质就是异步的语法糖！
 it.next(param)做的就是 通知generter 异步操作有结果了 可以继续执行了。并将结果传递出去。
 而async/await 就是由包了一层语法糖
+
+这种方式最大的好处是  异步操作有结果后的操作 不必写在回调里了  因为异步的结果可以被
+传递出去  把异步操作与回调的写法变得像同步！ 但实质还是异步！
+ */
+
+let i = 0;
+function foo(i) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(i * i);
+    });
+  });
+}
+/*
+for of  异步遍历 
+ */
+
+let arr = [1, 2, 3];
+
+arr.forEach(async (i) => {
+  console.log('start')
+  const res = await foo(i);
+  console.log(res);
+})
+console.log('end')
+
+/*
+start
+start
+start
+end  
+1    
+4
+9 
+ */
+
+/* (async function () {
+  for (let i of arr) {
+    console.log('start')
+    console.log(await foo(i));
+  }
+  console.log('end')
+})(); */
+/*
+start
+1
+start
+4
+start
+9
+end 
+ */
+/*
+蛋哥 想向您请教个问题  vue批量异步更新的目的我不大清楚。网上都说是为了节约页面渲染的成本，避免每次
+变更数据就更新页面。但是页面的渲染时机不是在两次事件循环的间隙执行吗？就算我有多次连续的数据变更，那也应该是
+在最后一次变更后再执行渲染啊。
  */
