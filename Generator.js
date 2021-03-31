@@ -216,8 +216,60 @@ start
 9
 end 
  */
-/*
-蛋哥 想向您请教个问题  vue批量异步更新的目的我不大清楚。网上都说是为了节约页面渲染的成本，避免每次
-变更数据就更新页面。但是页面的渲染时机不是在两次事件循环的间隙执行吗？就算我有多次连续的数据变更，那也应该是
-在最后一次变更后再执行渲染啊。
+
+
+/* 
+thunk函数 其实就是柯里化函数 参数复用
+thunk函数自动执行gengentor的核心原理还是再回调中吧执行权交给genertor（你懂的）
+为什么要用thunk函数 
+我们知道next方法的value属性就是yield后面的表达式 当使用了thunk函数 
+value拿到的即使该函数 我们把可以把回调传入该函数并执行。注意要在回调中把控制权交给genertor!!
+即调用next().
  */
+
+/*
+co模块
+两种自动执行genertor的方式
+thunk函数和promise 为什么?
+因为他们都能把回调和异步本身分离开  thunk通过柯里化 value(回调) promise通过then方法  value.then()
+ */
+
+// 基于thunk函数的gengrator自执行器
+
+function run(fn) {
+  var gen = fn();
+
+  function next(err, data) {
+    var result = gen.next(data);
+    if (result.done) return;
+    result.value(next);
+  }
+
+  next();
+}
+
+function* g() {
+  // ...
+}
+
+run(g);
+
+// 基于Promise的gengrator的自执行器
+
+function run(gen){
+  var g = gen();
+
+  function next(data){
+    var result = g.next(data);
+    if (result.done) return result.value;
+    result.value.then(function(data){
+      next(data);
+    });
+  }
+
+  next();
+}
+
+run(gen);
+
+// 两者的关键其实就是在回调在把执行权交给generator
