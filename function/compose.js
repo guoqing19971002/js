@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2021-03-15 19:26:50
- * @LastEditTime: 2021-03-16 11:04:47
- * @LastEditors: your name
- * @Description: In User Settings Edit
- * @FilePath: \js\function\compose.js
- */
 const compose = (...funcs) => {
   if (funcs.length === 0) {
     return (arg) => arg;
