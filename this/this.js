@@ -5,7 +5,11 @@ const foo = {
     },
     bar:function () {
         console.log(this.a)
+        let _get = () => {
+            console.log(this.a)
+        }
+        _get()
     }
 }
-foo.get() // 箭头函的this是上级作用域的this 上级是foo 是个对象 无法形成独立作用域
+// foo.get() // 箭头函的this是上级作用域的this 上级是foo 是个对象 无法形成独立作用域
 foo.bar()
