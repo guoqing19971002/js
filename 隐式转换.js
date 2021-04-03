@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2021-02-22 10:20:02
- * @LastEditTime: 2021-02-22 10:21:09
- * @LastEditors: your name
- * @Description: In User Settings Edit
- * @FilePath: \js\隐式转换.js
- */
 function fn() {
   return 20;
 }
