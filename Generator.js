@@ -25,6 +25,7 @@ function* foo(x) {
 }
 
 var a = foo(5);
+
 // a.next(); // Object{value:6, done:false}
 // a.next(); // Object{value:NaN, done:false}
 // a.next(); // Object{value:NaN, done:true}

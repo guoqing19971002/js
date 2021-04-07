@@ -43,28 +43,27 @@ function add() {
   return adder();
 }
 
-/* function add() {
-  // 第一次执行时，定义一个数组专门用来存储所有的参数
-  var _args = [].slice.call(arguments);
+// console.log(add(1)(2)(3) + 10);
 
-  // 在内部声明一个函数，利用闭包的特性保存_args并收集所有的参数值
-  var adder = function () {
-    var _adder = function () {
-      // [].push.apply(_args, [].slice.call(arguments));
-      _args.push(...arguments);
-      return _adder;
+function kelihua() {
+  let params = [...arguments];
+  let add = () => {
+    let _add = (...args) => {
+      params = [...params, ...args];
+      return _add;
     };
 
-    // 利用隐式转换的特性，当最后执行时隐式转换，并计算最终的值返回
-    _adder.toString = function () {
-      return _args.reduce(function (a, b) {
-        return a + b;
+    _add.toString = () => {
+      return params.reduce((pre, cur) => {
+        return pre + cur;
       });
     };
 
-    return _adder;
+    return _add;
   };
-  // return adder.apply(null, _args);
-  return adder(..._args);
-} */
-console.log(add(1)(2)(3) + 10);
+  // 返回add函数的执行 就等于返回了_add函数 也就表明 此后的调用将一直是_add 不管是隐式调用还是传参
+  // 传参就继续收集参数  隐式转换就计算结果
+  return add();
+}
+
+console.log(kelihua(1)(2,3)(4) + 2)
