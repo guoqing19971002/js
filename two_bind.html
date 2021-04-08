@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <span id="span">0</span>
+    <input type="text" id="input" />
+    <button onclick="change()">change</button>
+    <script>
+      let obj = {};
+      let def = 0;
+      let input = document.getElementById("input");
+      let span = document.getElementById("span");
+      let change = () => {
+        console.log(obj.text);
+        obj.text++
+      };
+      // 数据劫持
+      Object.defineProperty(obj, "text", {
+        configurable: true,
+        enumerable: true,
+        get() {
+          return def;
+        },
+        set(newVal) {
+          def = newVal;
+          input.value = newVal;
+          span.innerHTML = newVal;
+        },
+      });
+      // 输入监听
+      input.addEventListener("keyup", function (e) {
+        obj.text = e.target.value;
+      });
+    </script>
+  </body>
+</html>
