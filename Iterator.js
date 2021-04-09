@@ -17,8 +17,12 @@ TypedArray
 NodeList 对象 
  */
 
-let arr = ["a", "b", "c"];
-let iter = arr[Symbol.iterator]();
+// let arr = [1,2,3];
+// let iter = arr[Symbol.iterator](); // 得到遍历器对象
+// console.log(iter.next()) // { value: 1, done: false }
+// console.log(iter.next()) // { value: 2, done: false }
+// console.log(iter.next()) // { value: 3, done: false }
+// console.log(iter.next()) // { value: undefined, done: true }
 // Array默认具有Symbol.iterator属性 它是一个函数 返回遍历器对象
 // console.log(iter.next())// {value:'a',done:false}
 
@@ -26,15 +30,14 @@ const obj = {
   a: 1,
   b: 2,
   c: 3,
-  // 给对象添加[Symbol.iterator]属性，返回遍历器对象
   [Symbol.iterator]: function () {
-    let arr = Object.keys(this);
+    let keys = Object.keys(this);
     let index = 0;
     return {
       next: function () {
-        return index < arr.length
+        return index < keys.length
           ? {
-              value: this[arr[index++]],
+              value: this[keys[index++]],
               done: false,
             }
           : {
@@ -52,6 +55,10 @@ const obj = {
 /* for (value of obj) {
   console.log(value);
 } */
+
+console.log([...obj])
+console.log([...'str'])
+console.log([...new Set([1,2,3])])
 
 /* let it = obj[Symbol.iterator]();
 console.log(it.next());
@@ -102,11 +109,11 @@ values() 返回一个遍历器对象，用来遍历所有的键值。
  */
 // 这就知道为什么map.values()为什么不能跟Object.values()那样forEach了
 // 你返回的是遍历器对象,只能用forof遍历 而人家返回的是数组 可以用数组的遍历方法
-let arr1 = ['a', 'b', 'c'];
+/* let arr1 = ['a', 'b', 'c'];
 for (let pair of arr1.entries()) {
   console.log(pair);
 }
-
+ */
 /*
 不是所有类似数组的对象都具有 Iterator 接口，一个简便的解决方法，就是使用Array.from方法将其转为数组。 
  */
