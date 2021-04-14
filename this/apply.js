@@ -6,8 +6,10 @@ function foo (age){
 }
 foo.__proto__.myApply= function (){
     //获取this要指向的对象
-    const obj = Array.prototype.slice.call(arguments)[0]
-    const params = Array.prototype.slice.call(arguments).splice(1)
+    const args = [...arguments]
+    const obj = args[0]
+    const params = args[1]
+    if(!Array.isArray(params)) throw 'not array'
     /* params非数组时抛出错误 */
     const fun = Symbol('fun')
     obj[fun] = this

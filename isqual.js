@@ -7,7 +7,7 @@
  */
 const foo1 = {
   a: 1,
-  b: "1",
+  b: '1',
   c: NaN,
   d: [
     {
@@ -21,6 +21,10 @@ const foo1 = {
   g: null,
   x: new RegExp(/qwe/),
   h: new Error(123),
+  y: function(){
+    console.log('123')
+  },
+  n:undefined
 };
 
 const foo2 = {
@@ -39,6 +43,10 @@ const foo2 = {
   g: null,
   x: new RegExp(/qwe/),
   h: new Error(123),
+  y: function(){
+    console.log('123')
+  },
+  n:undefined
 };
 
 function isEqual(target1, target2) {
@@ -49,6 +57,10 @@ function isEqual(target1, target2) {
   if (target1 instanceof Error) {
     return target1.message === target2.message
   }
+  if (target1 instanceof Function) {
+    // 当函数参与计算时 会转为字符串
+    return target1+'' === target2+''
+  }
   if (typeof target1 !== "object") {
     if (typeof target1 === "number" && typeof target2 === "number") {
       return JSON.stringify(target1) === JSON.stringify(target2);
@@ -58,17 +70,15 @@ function isEqual(target1, target2) {
   }
   // 对象不能用序列化判断 只能序列化一层
   else {
-    if (target1 === null) {
-      return target2 === null;
-    }
+    if (target1 === null) return target2 === null
     const attrList = Object.keys(target1);
+    if(attrList.length !== Object.keys(target2).length) return false
     for (let i = 0; i < attrList.length; i++) {
       const res = isEqual(target1[attrList[i]], target2[attrList[i]]);
       if (!res) {
         console.log(attrList[i]);
         return false;
       }
-      // console.log(i)
     }
   }
   return true;
@@ -90,4 +100,6 @@ const obj2 = {
 const fn1 = new RegExp();
 const fn2 = new RegExp();
 
-console.log(isEqual(foo1, foo2));
+console.log(isEqual(foo1, foo2))
+
+// console.log(typeof NaN)

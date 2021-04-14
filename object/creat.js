@@ -68,10 +68,22 @@ console.log(person1.__proto__ === Person) // true */
 
 // 相比new关键字少了执行构造函数这一步 因此新建对象上没有目标对象的属性
 
-
 /*
 Object.setPrototypeOf
 描述：该方法的作用与 __proto__ 相同，用来设置一个对象的 prototype 对象，返回参数对象本身。
 它是 ES6 正式推荐的设置原型对象的方法。 
 Object.setPrototypeOf(object, prototype)
  */
+
+const obj1 = {
+  a: 1,
+  b: "xiaom",
+};
+
+const obj2 = Object.create(obj1, {
+  c: {
+    value: 3,
+  },
+  d: { value: 4 },
+});
+console.log(obj2);
