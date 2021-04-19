@@ -34,8 +34,7 @@ const arr = [1, 2, 3, 4, 5];
 }); */
 
 /*
-forEach循环相当于给每个元素注册一个函数并执行 该函数的执行不影响循环的进行
-for循环 要等循环体内的代码执行完在进行循环 因此可以做到睡眠
+// await会使得当前上下文的状态暂存
  */
 (async function (params) {
   for (let i of arr) {

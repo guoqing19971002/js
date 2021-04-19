@@ -66,4 +66,15 @@ function kelihua() {
   return add();
 }
 
-console.log(kelihua(1)(2,3)(4) + 2)
+function Add(...args) {
+  const _add = (..._args) => {
+    args = [...args, ..._args];
+    return _add;
+  };
+  _add.toString = () => {
+    return args.reduce((pre, cur) => pre + cur);
+  };
+  return _add;
+}
+
+console.log(Add(1)(2, 3)(4)+2);
