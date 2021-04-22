@@ -23,11 +23,12 @@ async function one2FiveInAsync() {
     console.log(i);
     await sleep(1000);
   }
-  console.log("asd");
+  
 }
 
 const arr = [1, 2, 3, 4, 5];
 
+// one2FiveInAsync()
 /* arr.forEach(async (i) => {
   console.log(i);
   await sleep(1000);
@@ -36,12 +37,12 @@ const arr = [1, 2, 3, 4, 5];
 /*
 // await会使得当前上下文的状态暂存
  */
-(async function (params) {
+/* (async function (params) {
   for (let i of arr) {
     console.log(i);
     await sleep(500);
   }
   console.log("asd");
-})();
+})(); */
 
 // one2FiveInAsync();
