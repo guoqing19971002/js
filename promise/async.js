@@ -1,4 +1,4 @@
-// const fs = require("fs");
+const fs = require("fs");
 function promisify_readFile(path) {
   return new Promise((resolve, reject) => {
     fs.readFile(path, (err, data) => {
@@ -25,13 +25,13 @@ Generator的函数异步应用之async函数。
 co(gen); */
 
 // 下面使用async/await实现
-/* const asyncReadFile = async () => {
+/* async function asyncReadFile() {
   const res1 = await promisify_readFile("./text1.txt");
   console.log(res1.toString());
   const res2 = await promisify_readFile("./text2.txt");
   console.log(res2.toString());
-}; */
-
+}
+asyncReadFile() */
 /*
 可以看到
 从形式上看 async/await进行异步流程处理，无需执行器，函数可以像普通函数一样执行，这意味着async函数内置了gen函数的执行器。
@@ -53,23 +53,26 @@ async函数返回的是Promise对象 因此可以为async函数指定then方法
 当async函数内部抛出错误则会执行失败回调或catch方法 状态变为失败
  */
 
-/* const asyncReadFile = async () => {
-  const res = await promisify_readFile("./text1.txt");
-  return new Error(res);
+/* const promisifyTimeOut = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("timeOut");
+    }, 500);
+  });
 };
-const test = asyncReadFile();
-test.then(
+const asyncTimeOut = async () => {
+  const res = await promisifyTimeOut();
+  return res;
+};
+asyncTimeOut().then(
   (res) => {
     console.log("success" + res);
   },
   (r) => {
-    console.log("errrrrr" + r);
+    console.log("err" + r);
   }
-);
-setTimeout(() => {
-  console.log(test);
-}, 500);
- */
+); */
+// timeOut
 
 /*
 await命令只能用在async函数之中，如果用在普通函数，就会报错。
@@ -146,8 +149,8 @@ function spawn(genF) {
 const promisify = (data) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve(1);
-    }, 500);
+      resolve(data);
+    }, 300);
   });
 };
 
@@ -155,7 +158,7 @@ const promisify2 = (data) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve(data);
-    }, 500);
+    }, 300);
   });
 };
 
@@ -168,17 +171,20 @@ function* testGen() {
 }
 
 const async = (gen) => {
-  return spawn(gen);
+  return () => {
+    return spawn(gen);
+  };
 };
 
-/* const foo = async(testGen);
+/* const asyncFoo = async(testGen);
+const res = asyncFoo();
 setTimeout(() => {
-  console.log(foo);
-},2000); */
-
+  console.log(res);
+}, 1000);
+ */
 /* 
 环境栈
-async 函数可以保留运行堆栈。
+
 
 在前面对执行上下文的讨论时我们知道，
 JavaScript 代码运行时，会产生一个全局的上下文环境（context，又称运行环境），包含了当前所有的变量和对象。
@@ -189,7 +195,7 @@ JavaScript 代码运行时，会产生一个全局的上下文环境（context�
 Generator 函数不是这样，它执行产生的上下文环境，一旦遇到yield命令，就会暂时退出堆栈，
 但是并不消失，里面的所有变量和对象会冻结在当前状态。等到对它执行next命令时，这个上下文环境又会重新加入调用栈，冻结的变量和对象恢复执行。
 
-而async函数是Generator函数的语法糖，因此他也有一样的特性
+而async函数是Generator函数的语法糖，因此他也有一样的特性,即async 函数可以保留运行堆栈。
 
 这条特性可以理解为 await语句后面的所有代码会进入异步任务队列 相当与全部放进了promise.then的回调函数中
 
@@ -198,13 +204,13 @@ Generator 函数不是这样，它执行产生的上下文环境，一旦遇到y
 不存在继发关系，最好让它们同时触发。 并发执行可以用Promise.all
  */
 
-const timeOut = () => {
+/* const timeOut = () => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve();
     }, 500);
   });
-};
+}; */
 
 /* 每隔半秒打印 最后打印end */
 /* (async function () {
@@ -233,9 +239,9 @@ const timeOut = () => {
 利用这一点 可以实现休眠器 
  */
 
-/* function sleep(interval) {
+function sleep(interval) {
   return new Promise((resolve) => {
-    setTimeout(resolve, interval);
+    setTimeout(resolve,interval);
   });
 }
 // 用法
@@ -243,7 +249,9 @@ async function Async(timeOut) {
   await sleep(timeOut);
   console.log("foo!");
 }
-Async(1000); */
+Async(0)
+console.log('end!')
+
 
 /* 
 通过上例也能看出 只能写在async上下文中 否则将不生效 也即 虽然看起来像同步 但实质还是异步 不会阻塞代码
