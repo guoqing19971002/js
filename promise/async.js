@@ -11,14 +11,9 @@ function promisify_readFile(path) {
 Generator的函数异步应用之async函数。
 */
 
-/*
-yield/await 后面的代码 相当于。。。
-要说明 虽然看起来变异步为同步 但不会阻塞代码 实质上还是异步
-暂存当前山下文 
- */
 /* 
 前文说到async/await是异步编程的'终极'解决方案，终极二字就体现在,操作异步上无论是操作逻辑还是语义
-都。。
+都与同步操作无限接近（当然只是形式上像）。。
 这是使用Generator函数控制异步流程代码
  */
 /* function* gen() {
@@ -38,14 +33,14 @@ co(gen); */
 }; */
 
 /*
-可以看到async/await进行异步流程处理，无需执行器，函数可以像普通函数一样执行，这意味着async函数内置了执行器。
+可以看到
+从形式上看 async/await进行异步流程处理，无需执行器，函数可以像普通函数一样执行，这意味着async函数内置了gen函数的执行器。
 从语义上将， async关键字表示函数内部有异步操作，await关键字表示等待异步操作执行完毕。
 下面具体介绍
  */
 
 /*
 - 特点
-
 async函数返回的是Promise对象 因此可以为async函数指定then方法
  */
 /* asyncReadFile().then(() => {
@@ -82,6 +77,8 @@ await命令后面是一个 Promise 对象，返回该对象的结果。如果不
  */
 
 /*
+错误处理 
+
 async函数中的任何一个Promise如果变为reject 则async会立即变为reject，会立即中断执行，并执行相应的错误回调
 如果不想终止执行 可以将可能抛出错误的promise包在try。。catch代码块中  多个await可以统一包在try...catch中
 也可以在可能抛出错误的promise后加catch方法
@@ -219,7 +216,6 @@ const timeOut = () => {
 })();
  */
 
-
 /*由于块级作用域 会打印012 但会先打印end  且012会几乎同时打印
 执行环境站不会被冻结 因此循环的进行不受影响 三个微任务几乎同时被加入队列 
  */
@@ -231,15 +227,24 @@ const timeOut = () => {
   }
   console.log("end");
 })(); */
-console.log('asd')
+// console.log("asd");
 
 /*
 利用这一点 可以实现休眠器 
-注意 只能写在async上下文中 否则将不生效 也即 虽然看起来像同步 但实质还是异步 不会阻塞代码
-
-没有继发关系的异步 尽量不要这么写
  */
 
-async function sleep(time){
-
+/* function sleep(interval) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, interval);
+  });
 }
+// 用法
+async function Async(timeOut) {
+  await sleep(timeOut);
+  console.log("foo!");
+}
+Async(1000); */
+
+/* 
+通过上例也能看出 只能写在async上下文中 否则将不生效 也即 虽然看起来像同步 但实质还是异步 不会阻塞代码
+没有继发关系的异步 尽量不要这么写 */
