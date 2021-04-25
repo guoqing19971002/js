@@ -53,25 +53,22 @@ async函数返回的是Promise对象 因此可以为async函数指定then方法
 当async函数内部抛出错误则会执行失败回调或catch方法 状态变为失败
  */
 
-/* const promisifyTimeOut = () => {
-  return new Promise((resolve) => {
+const promisifyTimeOut = () => {
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve("timeOut");
+      reject("some err");
     }, 500);
   });
 };
 const asyncTimeOut = async () => {
-  const res = await promisifyTimeOut();
-  return res;
+  await promisifyTimeOut().catch((r) => {
+    throw r;
+  });
+
+  console.log("foo");
 };
-asyncTimeOut().then(
-  (res) => {
-    console.log("success" + res);
-  },
-  (r) => {
-    console.log("err" + r);
-  }
-); */
+/* asyncTimeOut().catch((r) => console.log(r + "asd")); */
+// some err
 // timeOut
 
 /*
@@ -135,11 +132,13 @@ function spawn(genF) {
       try {
         res = gen.next(data);
       } catch (e) {
+        // 内部跑出错误 状态变为rejet
         return reject(e);
       }
       if (res.done) {
         return resolve(res.value);
       }
+      // 为异步指定成功/失败回调 成功则继续执行 失败则理解rejected
       Promise.resolve(res.value).then(step, (r) => reject(r));
     }
     step();
@@ -176,12 +175,12 @@ const async = (gen) => {
   };
 };
 
-/* const asyncFoo = async(testGen);
-const res = asyncFoo();
-setTimeout(() => {
+// const asyncFoo = async(testGen);
+// const res = asyncFoo().catch((r) => console.log(r));
+/* setTimeout(() => {
   console.log(res);
-}, 1000);
- */
+}, 1000); */
+
 /* 
 环境栈
 
@@ -241,17 +240,18 @@ Generator 函数不是这样，它执行产生的上下文环境，一旦遇到y
 
 function sleep(interval) {
   return new Promise((resolve) => {
-    setTimeout(resolve,interval);
+    setTimeout(() => {
+      console.log("foo!");
+      resolve();
+    }, interval);
   });
 }
-// 用法
-async function Async(timeOut) {
-  await sleep(timeOut);
-  console.log("foo!");
+async function Async() {
+  await Promise.all([sleep(500), sleep(500)]);
+  console.log("end");
 }
-Async(0)
-console.log('end!')
-
+Async();
+// 两个异步并发执行 几乎同时打印foo！
 
 /* 
 通过上例也能看出 只能写在async上下文中 否则将不生效 也即 虽然看起来像同步 但实质还是异步 不会阻塞代码
