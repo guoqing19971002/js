@@ -18,11 +18,13 @@ function myNew(fn) {
     */
   const params = Array.prototype.slice.call(arguments).splice(1);
 
-  /* 通过apply改变this指向，并执行构造函数 */
-  fn.apply(myObj, params);
+  /* 通过apply改变this指向，并执行构造函数获得其执行结果 */
+  const res = fn.apply(myObj, params);
 
-  /* 最后返回该对象 */
-  return myObj;
+  /* 如果构造函数返回值是对象则返回该对象，否则返回自己创建的对象 */
+  return res && (typeof result === "object" || typeof result === "function")
+    ? res
+    : myObj;
 }
 /* 对比一下new关键字和自己写的myNew */
 const p1 = new Person("二牛", 18); //Person { name: '二牛', age: 18 }
