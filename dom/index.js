@@ -1,4 +1,6 @@
-/* bfs计算dom树最大孩子数 */
+/* bfs计算dom树最大孩子数
+每个节点 判断其nodeList.length 取最大值
+ */
 
 function bfs(node) {
   let q = [];
@@ -18,6 +20,7 @@ bfs(Array.from(document.getElementsByTagName("body"))[0]);
 
 /*
 dfs获取最深嵌套层数 
+每次递归都传入深度d 
  */
 function getDep(node) {
   let depth = 0;
