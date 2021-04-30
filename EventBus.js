@@ -1,3 +1,6 @@
+/**
+ * @description 实现事件中心
+ */
 class EventBus {
   constructor() {
     this.callbacks = new Map(); //存储自定义事件
